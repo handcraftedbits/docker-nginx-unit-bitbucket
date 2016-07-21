@@ -1,4 +1,4 @@
-# NGINX Host Bitbucket Unit [![Docker Pulls](https://img.shields.io/docker/stars/handcraftedbits/nginx-unit-bitbucket.svg?maxAge=2592000)](https://hub.docker.com/r/handcraftedbits/nginx-unit-bitbucket)
+# NGINX Host Bitbucket Unit [![Docker Pulls](https://img.shields.io/docker/pulls/handcraftedbits/nginx-unit-bitbucket.svg?maxAge=2592000)](https://hub.docker.com/r/handcraftedbits/nginx-unit-bitbucket)
 
 A [Docker](https://www.docker.com) container that provides an
 [Atlassian Bitbucket](https://www.atlassian.com/software/bitbucket) unit for
