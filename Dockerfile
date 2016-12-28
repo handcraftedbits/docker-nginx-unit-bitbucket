@@ -1,7 +1,7 @@
-FROM handcraftedbits/nginx-unit-java:8.92.14
+FROM handcraftedbits/nginx-unit-java:8.112.15
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
-ARG BITBUCKET_VERSION=4.7.1
+ARG BITBUCKET_VERSION=4.12.0
 
 ENV BITBUCKET_HOME /opt/data/bitbucket
 
