@@ -6,15 +6,13 @@
 
 checkCommonRequiredVariables
 
-notifyUnitLaunched
-
 copyUnitConf nginx-unit-bitbucket > /dev/null
 
 logUrlPrefix "bitbucket"
 
 notifyUnitStarted
 
-# Fix Bamboo configuration.
+# Fix Bitbucket configuration.
 
 bitbucket_config=/opt/bitbucket/conf/server.xml
 
@@ -26,8 +24,13 @@ fileSubstitute ${bitbucket_config} NGINX_URL_PREFIX `normalizeSlashesSingleSlash
 # Import certificate (so we can integrate with other Atlassian product instances).
 
 printf "changeit\nyes" | keytool -import -trustcacerts -alias root \
-     -file /etc/letsencrypt/live/${NGINX_UNIT_HOSTS}/fullchain.pem -keystore ${JAVA_HOME}/jre/lib/security/cacerts
+     -file /etc/letsencrypt/live/${NGINX_UNIT_HOSTS}/fullchain.pem -keystore \
+     /usr/lib/jvm/default-jvm/jre/lib/security/cacerts
 
- # Start Bamboo.
+# Fix umask settings per Bitbucket recommendations.
 
-/opt/bitbucket/bin/start-bitbucket.sh -fg
+umask 0027
+
+# Start Bitbucket.
+
+exec /opt/bitbucket/bin/start-webapp.sh -fg

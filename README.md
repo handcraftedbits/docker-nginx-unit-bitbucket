@@ -6,7 +6,7 @@ A [Docker](https://www.docker.com) container that provides an
 
 # Features
 
-* Atlassian Bitbucket 4.12.1
+* Atlassian Bitbucket 4.13.0
 * NGINX Host SSL certificates are automatically imported into Bitbucket's JVM so Atlassian application links can easily
   be created
 
@@ -78,7 +78,7 @@ Finally, we need to create a link in our NGINX Host container to the `bitbucket`
 Here is our final `docker-compose.yml` file:
 
 ```yaml
-version: '2'
+version: "3"
 
 services:
   bitbucket:
@@ -109,8 +109,9 @@ services:
 
   proxy:
     image: handcraftedbits/nginx-host
-    links:
-      - bitbucket
+    depends_on:
+      bitbucket:
+        condition: service_healthy
     ports:
       - "443:443"
     volumes:

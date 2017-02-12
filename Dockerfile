@@ -1,14 +1,12 @@
-FROM handcraftedbits/nginx-unit-java:8.112.15-1
+FROM handcraftedbits/nginx-unit:1.1.0
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
-ARG BITBUCKET_VERSION=4.12.1
+ARG BITBUCKET_VERSION=4.13.0
 
 ENV BITBUCKET_HOME /opt/data/bitbucket
 
-COPY data /
-
 RUN apk update && \
-  apk add ca-certificates git mercurial wget && \
+  apk add bash ca-certificates git mercurial openjdk8-jre wget && \
 
   cd /opt && \
   wget https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz && \
@@ -18,7 +16,9 @@ RUN apk update && \
 
   apk del wget
 
+COPY data /
+
 EXPOSE 7990
 EXPOSE 7999
 
-CMD ["/bin/bash", "/opt/container/script/run-bitbucket.sh"]
+CMD [ "/bin/bash", "/opt/container/script/run-bitbucket.sh" ]
