@@ -1,4 +1,4 @@
-FROM handcraftedbits/nginx-unit:1.1.0
+FROM handcraftedbits/nginx-unit:1.1.2
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
 ARG BITBUCKET_VERSION=4.13.0
@@ -6,7 +6,7 @@ ARG BITBUCKET_VERSION=4.13.0
 ENV BITBUCKET_HOME /opt/data/bitbucket
 
 RUN apk update && \
-  apk add bash ca-certificates git mercurial openjdk8-jre wget && \
+  apk add ca-certificates git mercurial openjdk8-jre wget && \
 
   cd /opt && \
   wget https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz && \

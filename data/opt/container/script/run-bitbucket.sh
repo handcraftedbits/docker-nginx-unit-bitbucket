@@ -6,11 +6,11 @@
 
 checkCommonRequiredVariables
 
-copyUnitConf nginx-unit-bitbucket > /dev/null
+notifyUnitLaunched
+
+unitConf=`copyUnitConf nginx-unit-bitbucket`
 
 logUrlPrefix "bitbucket"
-
-notifyUnitStarted
 
 # Fix Bitbucket configuration.
 
@@ -21,10 +21,12 @@ cp /opt/container/template/server.xml.template ${bitbucket_config}
 fileSubstitute ${bitbucket_config} NGINX_UNIT_HOSTS ${NGINX_UNIT_HOSTS}
 fileSubstitute ${bitbucket_config} NGINX_URL_PREFIX `normalizeSlashesSingleSlashToEmpty ${NGINX_URL_PREFIX}`
 
+notifyUnitStarted
+
 # Import certificate (so we can integrate with other Atlassian product instances).
 
 printf "changeit\nyes" | keytool -import -trustcacerts -alias root \
-     -file /etc/letsencrypt/live/${NGINX_UNIT_HOSTS}/fullchain.pem -keystore \
+     -file /opt/container/shared/etc/letsencrypt/live/${NGINX_UNIT_HOSTS}/fullchain.pem -keystore \
      /usr/lib/jvm/default-jvm/jre/lib/security/cacerts
 
 # Fix umask settings per Bitbucket recommendations.
@@ -33,4 +35,4 @@ umask 0027
 
 # Start Bitbucket.
 
-exec /opt/bitbucket/bin/start-webapp.sh -fg
+startProcessWithTrap onProcessStopped ${unitConf} /opt/bitbucket/bin/start-webapp.sh -fg

@@ -47,9 +47,8 @@ bitbucket:
   ports:
     - "7999:7999"
   volumes:
+    - data:/opt/container/shared
     - /home/me/bitbucket:/opt/data/bitbucket
-  volumes_from:
-    - data
 
 db-bitbucket:
   image: postgres
@@ -66,8 +65,7 @@ Observe the following:
 * We create a link in `bitbucket` to `db-bitbucket` in order to allow Bitbucket to connect to our database.
 * We mount `/opt/data/bitbucket` using the local directory `/home/me/bitbucket`.  This is the directory where Bitbucket
   stores its data.
-* As with any other NGINX Host unit, we mount the volumes from our
-  [NGINX Host data container](https://github.com/handcraftedbits/docker-nginx-host-data), in this case named `data`.
+* As with any other NGINX Host unit, we mount our data volume, in this case named `data`, to `/opt/container/shared`.
 * Though not required, we bind the local port `7999` to the `bitbucket` container's port `7999` in order to expose
   [Git over SSH](https://confluence.atlassian.com/bitbucketserver/enabling-ssh-access-to-git-repositories-in-bitbucket-server-776640358.html).
 
@@ -78,7 +76,10 @@ Finally, we need to create a link in our NGINX Host container to the `bitbucket`
 Here is our final `docker-compose.yml` file:
 
 ```yaml
-version: "3"
+version: "2.1"
+
+volumes:
+  data:
 
 services:
   bitbucket:
@@ -91,12 +92,8 @@ services:
     ports:
       - "7999:7999"
     volumes:
+      - data:/opt/container/shared
       - /home/me/bitbucket:/opt/data/bitbucket
-    volumes_from:
-      - data
-
-  data:
-    image: handcraftedbits/nginx-host-data
 
   db-bitbucket:
     image: postgres
@@ -109,16 +106,14 @@ services:
 
   proxy:
     image: handcraftedbits/nginx-host
-    depends_on:
-      bitbucket:
-        condition: service_healthy
+    links:
+      - bitbucket
     ports:
       - "443:443"
     volumes:
+      - data:/opt/container/shared
       - /etc/letsencrypt:/etc/letsencrypt
       - /home/me/dhparam.pem:/etc/ssl/dhparam.pem
-    volumes_from:
-      - data
 ```
 
 This will result in making a Bitbucket instance available at `https://mysite.com/bitbucket`.
