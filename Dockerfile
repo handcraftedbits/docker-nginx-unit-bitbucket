@@ -13,6 +13,7 @@ RUN apk update && \
   tar -xzvf atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz && \
   rm atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz && \
   mv atlassian-bitbucket-${BITBUCKET_VERSION} bitbucket && \
+  chmod +x /opt/bitbucket/bin/start-webapp.sh && \
 
   apk del wget
 
