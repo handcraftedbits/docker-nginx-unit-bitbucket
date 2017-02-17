@@ -8,7 +8,7 @@ checkCommonRequiredVariables
 
 notifyUnitLaunched
 
-unitConf=`copyUnitConf nginx-unit-bitbucket`
+copyUnitConf nginx-unit-bitbucket > /dev/null
 
 logUrlPrefix "bitbucket"
 
@@ -35,4 +35,4 @@ umask 0027
 
 # Start Bitbucket.
 
-startProcessWithTrap onProcessStopped ${unitConf} /opt/bitbucket/bin/start-webapp.sh -fg
+exec /opt/bitbucket/bin/start-webapp.sh -fg
