@@ -6,7 +6,7 @@ A [Docker](https://www.docker.com) container that provides an
 
 # Features
 
-* Atlassian Bitbucket 4.13.0
+* Atlassian Bitbucket 4.14.2
 * NGINX Host SSL certificates are automatically imported into Bitbucket's JVM so Atlassian application links can easily
   be created
 

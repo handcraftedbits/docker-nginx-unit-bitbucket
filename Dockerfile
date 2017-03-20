@@ -1,7 +1,7 @@
 FROM handcraftedbits/nginx-unit:1.1.3
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
-ARG BITBUCKET_VERSION=4.13.0
+ARG BITBUCKET_VERSION=4.14.2
 
 ENV BITBUCKET_HOME /opt/data/bitbucket
 
